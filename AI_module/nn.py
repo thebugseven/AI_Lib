@@ -6,7 +6,7 @@
 #    By: jhue <jhue@student.42lyon.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2026/04/14 14:49:40 by jhue              #+#    #+#              #
-#    Updated: 2026/04/14 15:47:37 by jhue             ###   ########.fr        #
+#    Updated: 2026/04/14 15:54:03 by jhue             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -106,13 +106,13 @@ class Dense(Layer):
 
         match activation:
             case "ReLU":
-                self.activation = activation_function(ReLU())
+                self.activation = ReLU()
             case "Sigmoid":
-                self.activation = activation_function(Sigmoid())
+                self.activation = Sigmoid()
             case "Tanh":
-                self.activation = activation_function(Tanh())
+                self.activation = Tanh()
             case "Softmax":
-                self.activation = activation_function(Softmax())
+                self.activation = Softmax()
             case _:
                 self.activation = None
 
