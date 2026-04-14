@@ -1,3 +1,15 @@
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    nn.py                                              :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: jhue <jhue@student.42lyon.fr>              +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2026/04/14 14:49:40 by jhue              #+#    #+#              #
+#    Updated: 2026/04/14 14:51:25 by jhue             ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
+
 import numpy as np
 from .math_utils import *
 
@@ -76,7 +88,7 @@ class Layer:
 
     def backward(self, grad_output):
         raise NotImplementedError("Backward method not implemented.")
-    
+
     def update(self, lr):
         pass
 
@@ -102,7 +114,7 @@ class Dense(Layer):
         x = np.asarray(x, dtype=float).reshape(-1)
         self.input = x
         return self.W @ x + self.b
-    
+
     def backward(self, grad_output):
         grad_output = np.asarray(grad_output, dtype=float).reshape(-1)
 
@@ -161,7 +173,7 @@ class Sequential:
         for layer in self.layers:
             x = layer.forward(x)
         return x
-    
+
     def backward(self, grad_output):
         for layer in reversed(self.layers):
             grad_output = layer.backward(grad_output)

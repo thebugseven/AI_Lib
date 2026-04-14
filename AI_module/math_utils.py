@@ -1,3 +1,15 @@
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    math_utils.py                                      :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: jhue <jhue@student.42lyon.fr>              +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2026/04/14 14:49:36 by jhue              #+#    #+#              #
+#    Updated: 2026/04/14 14:52:04 by jhue             ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
+
 import numpy as np
 
 
@@ -12,5 +24,5 @@ def accuracy(model, X, y):
     for x, target in zip(X, y):
         pred = model.predict(x)
         if pred == target:
-               correct += 1
+            correct += 1
     return correct / len(X)
