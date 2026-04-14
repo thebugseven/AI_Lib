@@ -6,7 +6,7 @@
 #    By: jhue <jhue@student.42lyon.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2026/04/14 14:49:40 by jhue              #+#    #+#              #
-#    Updated: 2026/04/14 14:51:25 by jhue             ###   ########.fr        #
+#    Updated: 2026/04/14 15:47:37 by jhue             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -94,7 +94,7 @@ class Layer:
 
 
 class Dense(Layer):
-    def __init__(self, input_size, output_size, weights_init="xavier"):
+    def __init__(self, input_size, output_size, weights_init="xavier", activation=None):
         if weights_init == "xavier":
             limit = np.sqrt(6 / (input_size + output_size))
             self.W = np.random.uniform(-limit, limit, (output_size, input_size))
@@ -104,8 +104,19 @@ class Dense(Layer):
         else:
             self.W = np.random.randn(output_size, input_size) * 0.01
 
-        self.b = np.zeros(output_size)
+        match activation:
+            case "ReLU":
+                self.activation = activation_function(ReLU())
+            case "Sigmoid":
+                self.activation = activation_function(Sigmoid())
+            case "Tanh":
+                self.activation = activation_function(Tanh())
+            case "Softmax":
+                self.activation = activation_function(Softmax())
+            case _:
+                self.activation = None
 
+        self.b = np.zeros(output_size)
         self.input = None
         self.dW = None
         self.db = None
@@ -113,7 +124,10 @@ class Dense(Layer):
     def forward(self, x):
         x = np.asarray(x, dtype=float).reshape(-1)
         self.input = x
-        return self.W @ x + self.b
+        out = self.W @ x + self.b
+        if self.activation:
+            out = self.activation.forward(out)
+        return out
 
     def backward(self, grad_output):
         grad_output = np.asarray(grad_output, dtype=float).reshape(-1)
@@ -121,22 +135,13 @@ class Dense(Layer):
         self.dW = np.outer(grad_output, self.input)
         self.db = grad_output.copy()
         grad_input = self.W.T @ grad_output
+        if self.activation:
+            grad_input = self.activation.backward(grad_input)
         return grad_input
 
     def update(self, lr):
         self.W -= lr * self.dW
         self.b -= lr * self.db
-
-
-class Activation(Layer):
-    def __init__(self, activation):
-        self.activation = activation
-
-    def forward(self, x):
-        return self.activation.forward(x)
-
-    def backward(self, grad_output):
-        return self.activation.backward(grad_output)
 
 
 #==============================
